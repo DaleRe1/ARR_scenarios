@@ -2,189 +2,156 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ARR Scenarios</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--grad-1:linear-gradient(135deg,#141e30 0%,#243b55 100%);
-      --grad-2:linear-gradient(135deg,#1d4350 0%,#a43931 100%);
-      --font:'Inter',sans-serif;--accent:#ffd166;--card:rgba(255,255,255,.08)}
+:root {
+  --grad-1: linear-gradient(135deg,#141e30 0%,#243b55 100%);
+  --grad-2: linear-gradient(135deg,#1d4350 0%,#a43931 100%);
+  --font: 'Inter', sans-serif;
+  --accent: #ffd166;
+  --card: rgba(255,255,255,.08);
+}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{font-family:var(--font);color:#f2f4f8;height:100%;scroll-behavior:smooth;overflow-x:hidden}
+html,body{height:100%;font-family:var(--font);color:#f2f4f8;scroll-behavior:smooth;overflow-x:hidden}
 body{scroll-snap-type:y mandatory}
 .slide{width:100vw;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;scroll-snap-align:start;padding:1.5rem;text-align:center;position:relative}
-#slide-1{background:var(--grad-1)} #slide-2{background:var(--grad-2)}
-h1{font-size:2.6rem;margin-bottom:.6rem;font-weight:700} h2{font-size:2rem;margin-bottom:.6rem;font-weight:700}
-table{border-collapse:collapse;font-size:.95rem;min-width:620px}
-th,td{padding:.6rem 1rem;white-space:nowrap} tr:nth-child(even){background:rgba(255,255,255,.04)}
-th{opacity:.85;font-weight:600}.pos{color:#06d6a0}.neg{color:#ff6b6b}
-button{cursor:pointer;border:none;border-radius:8px;padding:.6rem 1.2rem;margin-top:1.2rem;background:var(--accent);color:#141e30;font-weight:600;font-size:1rem}
-input[type=range]{width:100%} label{display:block;font-size:.85rem;margin-top:.6rem} .value{font-weight:600;display:block;margin-top:.25rem}
-.control{background:var(--card);padding:1rem 1.5rem;border-radius:12px;backdrop-filter:blur(6px)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin:1.8rem auto;width:100%;max-width:1100px}
-#metrics{background:var(--card);padding:2rem 3rem;border-radius:14px;backdrop-filter:blur(8px);max-width:780px;margin-top:1.6rem;font-size:1.05rem}
-#metrics hr{border:none;border-top:1px solid rgba(255,255,255,.25);margin:1rem 0}
-.mini{position:absolute;bottom:2rem;background:var(--card);padding:.6rem 1rem;border-radius:8px;font-size:.8rem;text-align:left}
-.mini th{opacity:.9;font-size:.85rem;padding-bottom:.3rem}.mini td{padding:.2rem .6rem}
-.vol{left:2rem}.arpu{right:2rem}
-/* mobile ≤600 px */
-@media(max-width:600px){
-  h1{font-size:1.6rem} h2{font-size:1.3rem} table,th,td{font-size:.8rem}
-  .grid{grid-template-columns:1fr} #metrics{padding:1rem;font-size:.9rem}
-  .control{margin-bottom:1.2rem}.mini{font-size:.7rem}
-}
+#slide-1{background:var(--grad-1)}
+#slide-2{background:var(--grad-2)}
+h1{font-size:2.6rem;font-weight:700;margin-bottom:.6rem}
+h2{font-size:2rem;font-weight:700;margin-bottom:.6rem}
+button{cursor:pointer;background:var(--accent);border:none;border-radius:8px;padding:.65rem 1.3rem;margin-top:1.3rem;font-weight:600;color:#141e30;font-size:1rem}
+/* table */
+ table{border-collapse:collapse;font-size:.95rem;width:95%;max-width:1040px}
+ th,td{padding:.55rem 1rem;white-space:nowrap}
+ th{opacity:.85;font-weight:600}
+ tr:nth-child(even){background:rgba(255,255,255,.04)}
+ .pos{color:#06d6a0;font-weight:600}
+ .neg{color:#ff6b6b;font-weight:600}
+ .na{color:#9ca3af;font-style:italic}
+ .note{position:absolute;bottom:1.2rem;right:1.6rem;background:var(--card);padding:.8rem 1rem;border-radius:8px;font-size:.8rem;backdrop-filter:blur(6px);max-width:280px;text-align:left}
+ .note strong{display:block;margin-bottom:.3rem}
+ .note ul{margin-left:1rem}
+ .note li{list-style:square;margin:.2rem 0}
+ /* Slide2 */
+ .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin:1.8rem auto;width:100%;max-width:1100px}
+ .control{background:var(--card);padding:1rem 1.3rem;border-radius:12px;backdrop-filter:blur(6px)}
+ label{display:block;font-size:.85rem;margin-top:.6rem}
+ .value{display:block;font-weight:600;margin-top:.25rem}
+ input[type=range]{width:100%}
+ #metrics{background:var(--card);padding:2rem 3rem;border-radius:14px;backdrop-filter:blur(8px);max-width:840px;font-size:1.05rem}
+ #metrics hr{border:none;border-top:1px solid rgba(255,255,255,.25);margin:1rem 0}
 </style>
 </head>
 <body>
-
-<!-- ───────── Slide 1 (unchanged summary) ───────── -->
+<!-- ============ CONFIG ============ -->
+<script>
+const PERIOD = { cur:'Jul-25', prev:'Jun-25', ytd:'Dec-24' };
+const SUMMARY=[
+  {name:'E‑Commerce / SMB',cl:{cur:6112,prev:6008,ytd:5615},ar:{cur:10.5,prev:10.3,ytd:9.49}},
+  {name:'Stripe BR',       cl:{cur:37,  prev:33,  ytd:null}, ar:{cur:0.1, prev:0.1,ytd:null}},
+  {name:'Enterprise',      cl:{cur:66,  prev:64,  ytd:64},   ar:{cur:3.7, prev:3.6,ytd:3.60}}
+];
+const SENS=[
+  {key:'e',name:'E‑Commerce SMB',baseClients:6112,baseARPU:143, addMax:5000, arpuMin:130, arpuMax:260, churnDefault:0},
+  {key:'n',name:'Enterprise',    baseClients:66,  baseARPU:4650,addMax:150,  arpuMin:2000,arpuMax:9000,churnDefault:0},
+  {key:'b',name:'Stripe BR',     baseClients:37,  baseARPU:180, addMax:15000,arpuMin:100, arpuMax:500, churnDefault:0}
+];
+</script>
+<!-- ============ SLIDE 1 ============ -->
 <section class="slide" id="slide-1">
   <h1>ARR Focus</h1>
-  <p style="max-width:760px;opacity:.85">Segment Allocation – Client & ARR Growth (MoM & YTD)</p>
-  <div style="overflow-x:auto;width:100%">
-    <table style="margin-top:1.4rem;width:100%">
-      <thead>
-        <tr><th rowspan="2">Segment</th><th colspan="4">Clients</th><th colspan="4">ARR (€ m)</th></tr>
-        <tr><th>Jul-25</th><th>Jun-25</th><th>MoM %</th><th><div>YTD<br>vs Dec-24</div></th>
-            <th>Jul-25</th><th>Jun-25</th><th>MoM %</th><th><div>YTD<br>vs Dec-24</div></th></tr>
-      </thead>
-      <tbody>
-        <tr><td>E-Commerce / SMB</td><td>6 112</td><td>6 008</td><td class="pos">+2%</td><td class="pos">+9%</td><td>10.5</td><td>10.3</td><td class="pos">+2%</td><td class="pos">+12%</td></tr>
-        <tr><td>Stripe BR</td><td>37</td><td>37</td><td>—</td><td>—</td><td>0.1</td><td>0.1</td><td>—</td><td>—</td></tr>
-        <tr><td>Enterprise</td><td>66</td><td>64</td><td class="pos">+3%</td><td class="pos">+3%</td><td>3.7</td><td>3.6</td><td class="pos">+2%</td><td class="pos">+2%</td></tr>
-        <tr style="font-weight:600;border-top:1px solid rgba(255,255,255,.25)"><td>Total</td><td>6 215</td><td>6 109</td><td class="pos">+2%</td><td class="pos">+9%</td><td>14.3</td><td>14.0</td><td class="pos">+2%</td><td class="pos">+10%</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="mini" style="right:2rem;bottom:2.2rem;max-width:240px">
-    <strong>Scope – Billed ARR only</strong><br>
-    • Stripe BR clients registered but not yet invoiced are excluded<br>
-    • Enterprise contracts signed but not yet activated are excluded
+  <p style="opacity:.85;max-width:820px">Segment Allocation – Client & ARR Growth (MoM & YTD)</p>
+  <table id="tbl"></table>
+  <div class="note">
+    <strong>Scope – Billed ARR only</strong>
+    <ul>
+      <li>Stripe BR clients registered but not yet invoiced are excluded</li>
+      <li>Enterprise contracts signed but not yet activated are excluded</li>
+    </ul>
   </div>
   <button onclick="document.getElementById('slide-2').scrollIntoView()">Next → Sensitivity</button>
 </section>
-
-<!-- ───────── Slide 2 – interactive sensitivity ───────── -->
+<!-- ============ SLIDE 2 ============ -->
 <section class="slide" id="slide-2">
   <h2>MRR / ARR Sensitivity – by Segment</h2>
-  <p style="max-width:880px;opacity:.85">Adjust Net Client Adds, Churn %, and ARPU. Metrics update live.</p>
-
-  <div class="grid">
-    <!-- E-Commerce / SMB -->
-    <div class="control">
-      <h3>E-Commerce / SMB</h3>
-      <label>Net Client Adds (0 – 5 000)</label>
-      <input id="eAdds" type="range" min="0" max="5000" step="100" value="0"><span class="value" id="eAddsVal">0</span>
-      <label>Churn % (0 – 10)</label>
-      <input id="eChurn" type="range" min="0" max="10" step="0.1" value="0"><span class="value" id="eChurnVal">0.0%</span>
-      <label>ARPU (€130 – €260)</label>
-      <input id="eArpu" type="range" min="130" max="260" step="1" value="143"><span class="value" id="eArpuVal">€143</span>
-    </div>
-
-    <!-- Enterprise -->
-    <div class="control">
-      <h3>Enterprise</h3>
-      <label>Net Client Adds (0 – 150)</label>
-      <input id="nAdds" type="range" min="0" max="150" step="1" value="0"><span class="value" id="nAddsVal">0</span>
-      <label>Churn % (0 – 10)</label>
-      <input id="nChurn" type="range" min="0" max="10" step="0.1" value="0"><span class="value" id="nChurnVal">0.0%</span>
-      <label>ARPU (€2 000 – €9 000)</label>
-      <input id="nArpu" type="range" min="2000" max="9000" step="100" value="4655"><span class="value" id="nArpuVal">€4 655</span>
-    </div>
-
-    <!-- Stripe BR -->
-    <div class="control">
-      <h3>Stripe BR</h3>
-      <label>Net Client Adds (0 – 15 000)</label>
-      <input id="sAdds" type="range" min="0" max="15000" step="250" value="0"><span class="value" id="sAddsVal">0</span>
-      <label>Churn % (0 – 10)</label>
-      <input id="sChurn" type="range" min="0" max="10" step="0.1" value="0"><span class="value" id="sChurnVal">0.0%</span>
-      <label>ARPU (€100 – €500)</label>
-      <input id="sArpu" type="range" min="100" max="500" step="5" value="180"><span class="value" id="sArpuVal">€180</span>
-    </div>
-
-    <!-- Service Provider -->
-    <div class="control">
-      <h3>Service Provider</h3>
-      <label>Net Client Adds (0 – 10 000)</label>
-      <input id="pAdds" type="range" min="0" max="10000" step="200" value="0"><span class="value" id="pAddsVal">0</span>
-      <label>Churn % (0 – 5)</label>
-      <input id="pChurn" type="range" min="0" max="5" step="0.1" value="0"><span class="value" id="pChurnVal">0.0%</span>
-      <label>ARPU (€0 – €500)</label>
-      <input id="pArpu" type="range" min="0" max="500" step="5" value="0"><span class="value" id="pArpuVal">€0</span>
-    </div>
-  </div>
-
-  <!-- Output panel -->
-  <div id="metrics">
-    <h3>Sensitivity Output</h3>
-    <p><strong>E-Com Clients:</strong> <span id="eClients">6 112</span> | <strong>MRR:</strong> €<span id="eMrr">874 016</span> | <strong>ARR:</strong> €<span id="eArr">10 488 192</span></p>
-    <p><strong>Enterprise Clients:</strong> <span id="nClients">66</span> | <strong>MRR:</strong> €<span id="nMrr">307 230</span> | <strong>ARR:</strong> €<span id="nArr">3 686 760</span></p>
-    <p><strong>Stripe BR Clients:</strong> <span id="sClients">37</span> | <strong>MRR:</strong> €<span id="sMrr">6 660</span> | <strong>ARR:</strong> €<span id="sArr">79 920</span></p>
-    <p><strong>Service Prov Clients:</strong> <span id="pClients">0</span> | <strong>MRR:</strong> €<span id="pMrr">0</span> | <strong>ARR:</strong> €<span id="pArr">0</span></p>
-    <hr>
-    <p><strong>Total MRR:</strong> €<span id="tMrr">1 187 906</span> | <strong>Total ARR:</strong> €<span id="tArr">14 254 872</span></p>
-  </div>
-
-  <!-- P7 baselines -->
-  <table class="mini vol">
-    <thead><tr><th colspan="2">P7 Client Base</th></tr></thead>
-    <tbody>
-      <tr><td>E-Comm & SMB</td><td style="text-align:right">6 112</td></tr>
-      <tr><td>Stripe BR</td><td style="text-align:right">37</td></tr>
-      <tr><td>Enterprise</td><td style="text-align:right">66</td></tr>
-      <tr><td>Service Prov</td><td style="text-align:right">0</td></tr>
-    </tbody>
-  </table>
-
-  <table class="mini arpu">
-    <thead><tr><th colspan="2">P7 ARPU Base</th></tr></thead>
-    <tbody>
-      <tr><td>E-Comm & SMB</td><td style="text-align:right">€143</td></tr>
-      <tr><td>Stripe BR</td><td style="text-align:right">€180</td></tr>
-      <tr><td>Enterprise</td><td style="text-align:right">€4 655</td></tr>
-      <tr><td>Service Prov</td><td style="text-align:right">€0</td></tr>
-    </tbody>
-  </table>
-
-<script>
-const baseE=6112,baseN=66,baseS=37,baseP=0;
-const €fmt=v=>v.toLocaleString('en-GB',{style:'currency',currency:'EUR',maximumFractionDigits:0});
-const fmt =v=>v.toLocaleString('en-GB'); const $ =id=>document.getElementById(id);
-
-function calc(){
-  const eAdd=+$('eAdds').value,eChurn=+$('eChurn').value/100,eArpu=+$('eArpu').value;
-  const nAdd=+$('nAdds').value,nChurn=+$('nChurn').value/100,nArpu=+$('nArpu').value;
-  const sAdd=+$('sAdds').value,sChurn=+$('sChurn').value/100,sArpu=+$('sArpu').value;
-  const pAdd=+$('pAdds').value,pChurn=+$('pChurn').value/100,pArpu=+$('pArpu').value;
-
-  const eCli=Math.round((baseE+eAdd)*(1-eChurn));
-  const nCli=Math.round((baseN+nAdd)*(1-nChurn));
-  const sCli=Math.round((baseS+sAdd)*(1-sChurn));
-  const pCli=Math.round((baseP+pAdd)*(1-pChurn));
-
-  const eM=eCli*eArpu,nM=nCli*nArpu,sM=sCli*sArpu,pM=pCli*pArpu;
-
-  $('eAddsVal').textContent=fmt(eAdd);$('eChurnVal').textContent=(eChurn*100).toFixed(1)+'%';$('eArpuVal').textContent=€fmt(eArpu);
-  $('nAddsVal').textContent=fmt(nAdd);$('nChurnVal').textContent=(nChurn*100).toFixed(1)+'%';$('nArpuVal').textContent=€fmt(nArpu);
-  $('sAddsVal').textContent=fmt(sAdd);$('sChurnVal').textContent=(sChurn*100).toFixed(1)+'%';$('sArpuVal').textContent=€fmt(sArpu);
-  $('pAddsVal').textContent=fmt(pAdd);$('pChurnVal').textContent=(pChurn*100).toFixed(1)+'%';$('pArpuVal').textContent=€fmt(pArpu);
-
-  $('eClients').textContent=fmt(eCli);$('eMrr').textContent=€fmt(eM);$('eArr').textContent=€fmt(eM*12);
-  $('nClients').textContent=fmt(nCli);$('nMrr').textContent=€fmt(nM);$('nArr').textContent=€fmt(nM*12);
-  $('sClients').textContent=fmt(sCli);$('sMrr').textContent=€fmt(sM);$('sArr').textContent=€fmt(sM*12);
-  $('pClients').textContent=fmt(pCli);$('pMrr').textContent=€fmt(pM);$('pArr').textContent=€fmt(pM*12);
-
-  const totalM=eM+nM+sM+pM;
-  $('tMrr').textContent=€fmt(totalM);
-  $('tArr').textContent=€fmt(totalM*12);
-}
-
-['eAdds','eChurn','eArpu','nAdds','nChurn','nArpu','sAdds','sChurn','sArpu','pAdds','pChurn','pArpu']
-  .forEach(id=>$(id).addEventListener('input',calc));
-window.addEventListener('DOMContentLoaded',calc);
-</script>
+  <p style="opacity:.85;max-width:880px">Adjust Net Client Adds, Churn %, and ARPU. Metrics update live.</p>
+  <div class="grid" id="ctrlGrid"></div>
+  <div id="metrics"><h3>Sensitivity Output</h3><div id="outBody"></div></div>
 </section>
+<!-- ============ SCRIPT ============ -->
+<script>
+/***** helpers *****/
+const $=id=>document.getElementById(id);
+const fmt=n=>n.toLocaleString('en-GB');
+const euro=v=>'€'+fmt(v);
+/***** Slide 1 builder *****/
+function pct(a,b){return (b?((a-b)/b*100):null);}
+function pctCell(a,b){const p=pct(a,b);if(p==null)return '<span class="na">—</span>';const cls=p>=0?'pos':'neg';const s=p>=0?'+':'';return `<span class="${cls}">${s}${p.toFixed(0)}%</span>`;}
+function cell(v,dec=0){return v==null?'<span class="na">—</span>':dec?v.toFixed(dec):fmt(v);} 
+function buildTable(){
+ const rows=SUMMARY.map(s=>`<tr><td>${s.name}</td>
+ <td>${cell(s.cl.cur)}</td><td>${cell(s.cl.prev)}</td><td>${pctCell(s.cl.cur,s.cl.prev)}</td><td>${pctCell(s.cl.cur,s.cl.ytd)}</td>
+ <td>${cell(s.ar.cur,1)}</td><td>${cell(s.ar.prev,1)}</td><td>${pctCell(s.ar.cur,s.ar.prev)}</td><td>${pctCell(s.ar.cur,s.ar.ytd)}</td></tr>`).join('');
+ const totals=SUMMARY.reduce((t,s)=>{
+  if(s.cl.cur!=null)t.clCur+=s.cl.cur;
+  if(s.cl.prev!=null)t.clPrev+=s.cl.prev;
+  if(s.cl.ytd!=null)t.clYTD+=s.cl.ytd;
+  if(s.ar.cur!=null)t.arCur+=s.ar.cur;
+  if(s.ar.prev!=null)t.arPrev+=s.ar.prev;
+  if(s.ar.ytd!=null)t.arYTD+=s.ar.ytd;return t;},{clCur:0,clPrev:0,clYTD:0,arCur:0,arPrev:0,arYTD:0});
+ const totalRow=`<tr style="font-weight:600;border-top:1px solid rgba(255,255,255,.25)"><td>Total</td>
+ <td>${fmt(totals.clCur)}</td><td>${fmt(totals.clPrev)}</td><td>${pctCell(totals.clCur,totals.clPrev)}</td><td>${pctCell(totals.clCur,totals.clYTD)}</td>
+ <td>${totals.arCur.toFixed(1)}</td><td>${totals.arPrev.toFixed(1)}</td><td>${pctCell(totals.arCur,totals.arPrev)}</td><td>${pctCell(totals.arCur,totals.arYTD)}</td></tr>`;
+ const head=`<thead><tr><th rowspan="2">Segment</th><th colspan="4">Clients</th><th colspan="4">ARR (€ m)</th></tr>
+ <tr><th>${PERIOD.cur}</th><th>${PERIOD.prev}</th><th>MoM %</th><th>YTD<br>vs ${PERIOD.ytd}</th>
+     <th>${PERIOD.cur}</th><th>${PERIOD.prev}</th><th>MoM %</th><th>YTD<br>vs ${PERIOD.ytd}</th></tr></thead>`;
+ $('tbl').innerHTML=head+'<tbody>'+rows+totalRow+'</tbody>';
+}
+/***** Slide 2 builder *****/
+function buildControls(){
+ const g=$('ctrlGrid');
+ g.innerHTML=SENS.map(seg=>`<div class="control" id="c-${seg.key}">
+  <h3>${seg.name}</h3>
+  <label>Net Client Adds (0 – ${fmt(seg.addMax)})</label>
+  <input type="range" id="${seg.key}Adds" min="0" max="${seg.addMax}" step="${seg.addMax>500?100:1}" value="0">
+  <span class="value" id="${seg.key}AddsVal">0</span>
+  <label>Churn % (0 – 10)</label>
+  <input type="range" id="${seg.key}Churn" min="0" max="10" step="0.1" value="${seg.churnDefault}">
+  <span class="value" id="${seg.key}ChurnVal">${seg.churnDefault.toFixed(1)}%</span>
+  <label>ARPU (€${seg.arpuMin} – €${seg.arpuMax})</label>
+  <input type="range" id="${seg.key}Arpu" min="${seg.arpuMin}" max="${seg.arpuMax}" step="${seg.arpuMin<200?1:100}" value="${seg.baseARPU}">
+  <span class="value" id="${seg.key}ArpuVal">€${fmt(seg.baseARPU)}</span>
+ </div>`).join('');
+}
+function calc(){
+ let totMRR=0,totARR=0,html='';
+ SENS.forEach(seg=>{
+  const adds=+$(seg.key+'Adds').value;
+  const churn=+$(seg.key+'Churn').value/100;
+  const arpu=+$(seg.key+'Arpu').value;
+  const clients=Math.round((seg.baseClients+adds)*(1-churn));
+  const mrr=clients*arpu;
+  const arr=mrr*12;
+  totMRR+=mrr;totARR+=arr;
+  // update value readouts
+  $(seg.key+'AddsVal').textContent=fmt(adds);
+  $(seg.key+'ChurnVal').textContent=(churn*100).toFixed(1)+'%';
+  $(seg.key+'ArpuVal').textContent=euro(arpu);
+  html+=`<p><strong>${seg.name} Clients:</strong> ${fmt(clients)} | <strong>MRR:</strong> ${euro(mrr)} | <strong>ARR:</strong> ${euro(arr)}</p>`;
+ });
+ html+='<hr><p><strong>Total MRR:</strong> '+euro(totMRR)+' | <strong>Total ARR:</strong> '+euro(totARR)+'</p>';
+ $('outBody').innerHTML=html;
+}
+/***** init *****/
+window.addEventListener('DOMContentLoaded',()=>{
+ buildTable();
+ buildControls();
+ // bind events
+ SENS.forEach(seg=>['Adds','Churn','Arpu'].forEach(s=>$(seg.key+s).addEventListener('input',calc)));
+ calc();
+});
+</script>
 </body>
 </html>
-
